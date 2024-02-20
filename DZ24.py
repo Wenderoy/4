@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 
-
 def cbr_data():
     
     headers = {
@@ -9,33 +8,56 @@ def cbr_data():
     }
     
     res = requests.get(
-        f'https://miningmoon.ru/kursy-kriptovalyut',
+        f'https://www.cbr.ru/key-indicators',
         headers=headers
     )
     
     soup = BeautifulSoup(res.text, 'html.parser')
     
-    table = soup.find('table')
-    table_rows = table.find_all('tr')
+            
+    table = soup.findAll('table')
 
-
-    for tr in table_rows:
-        td = tr.find_all('td')
+    d = []
+    for tr in table:
+        td = tr.find_all('td', {'class' : 'value td-w-4 _bold _end mono-num'})
         row = [i.text for i in td]
-        print(row)
-
+        d += row
+    # print(d)
     
-    # tb = soup.findAll('table', attrs={'class':'value td-w-4 _bold _end mono-num'})
+    d2 = []
+    for tr in table:
+        td = tr.find_all('td', {'class' : 'value td-w-4 _bold _end mono-num _with-icon _up _red'})
+        row = [i.text for i in td]
+        d2 += row
+    # print(d2)
+    
+    d3 = []
+    for tr in table:
+        td = tr.find_all('td', {'class' : 'value td-w-4 _end'})
+        row = [i.text for i in td]
+        d3 += row
+    # print(d3)
+        
+    d4 = []
+    for tr in table:
+        td = tr.find_all('td', {'class' : 'value td-w-4 _end'})
+        row = [i.text for i in td]
+        d4 += row
+    # print(d4)
+    
+    print(d3[0])
+    
+    print('Китайский юань:', d[0])
+    print('Доллар США:', d[1])
+    print('Евро:', d[2])
+    
+    print(d4[1])
+    
+    print('Китайский юань:', d2[0])
+    print('Доллар США:', d2[1])
+    print('Евро:', d2[2])
 
-    # for table in soup.find_all ('table'):
-    #     uan = table[0]
-    # print(uan)
-
-    # py_table = soup.find ('table', {'class':'value td-w-4 _bold _end mono-num'})
-    # py_rows = py_table.find_all ('tr')
-    # print(py_rows)
 
 
-
-def cbr_check():
-    data = cbr_data()
+cbr_data()
+    
